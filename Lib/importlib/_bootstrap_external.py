@@ -1363,7 +1363,9 @@ def _get_supported_file_loaders():
     extensions = ExtensionFileLoader, _imp.extension_suffixes()
     source = SourceFileLoader, SOURCE_SUFFIXES
     bytecode = SourcelessFileLoader, BYTECODE_SUFFIXES
-    return [extensions, source, bytecode]
+    # PEP XXXX: Look for .missing.py files as a last resort
+    missing = SourceFileLoader, ['.missing.py']
+    return [extensions, source, bytecode, missing]
 
 
 def _setup(_bootstrap_module):
