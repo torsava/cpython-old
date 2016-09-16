@@ -16508,40 +16508,11 @@ fi
 # check if the Linux getrandom() syscall is available
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for the Linux getrandom() syscall" >&5
 $as_echo_n "checking for the Linux getrandom() syscall... " >&6; }
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-
-    #include <unistd.h>
-    #include <sys/syscall.h>
-    #include <linux/random.h>
-
-    int main() {
-        char buffer[1];
-        const size_t buflen = sizeof(buffer);
-        const int flags = GRND_NONBLOCK;
-        /* ignore the result, Python checks for ENOSYS and EAGAIN at runtime */
-        (void)syscall(SYS_getrandom, buffer, buflen, flags);
-        return 0;
-    }
-
-
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  have_getrandom_syscall=yes
-else
-  have_getrandom_syscall=no
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $have_getrandom_syscall" >&5
-$as_echo "$have_getrandom_syscall" >&6; }
-
-if test "$have_getrandom_syscall" = yes; then
 
 $as_echo "#define HAVE_GETRANDOM_SYSCALL 1" >>confdefs.h
 
-fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: presumed yes" >&5
+$as_echo "presumed yes" >&6; }
 
 # check if the getrandom() function is available
 # the test was written for the Solaris function of <sys/random.h>

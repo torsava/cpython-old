@@ -5333,29 +5333,9 @@ fi
 
 # check if the Linux getrandom() syscall is available
 AC_MSG_CHECKING(for the Linux getrandom() syscall)
-AC_LINK_IFELSE(
-[
-  AC_LANG_SOURCE([[
-    #include <unistd.h>
-    #include <sys/syscall.h>
-    #include <linux/random.h>
-
-    int main() {
-        char buffer[1];
-        const size_t buflen = sizeof(buffer);
-        const int flags = GRND_NONBLOCK;
-        /* ignore the result, Python checks for ENOSYS and EAGAIN at runtime */
-        (void)syscall(SYS_getrandom, buffer, buflen, flags);
-        return 0;
-    }
-  ]])
-],[have_getrandom_syscall=yes],[have_getrandom_syscall=no])
-AC_MSG_RESULT($have_getrandom_syscall)
-
-if test "$have_getrandom_syscall" = yes; then
-    AC_DEFINE(HAVE_GETRANDOM_SYSCALL, 1,
-              [Define to 1 if the Linux getrandom() syscall is available])
-fi
+AC_DEFINE(HAVE_GETRANDOM_SYSCALL, 1,
+	  [Define to 1 if the Linux getrandom() syscall is available])
+AC_MSG_RESULT(presumed yes)
 
 # check if the getrandom() function is available
 # the test was written for the Solaris function of <sys/random.h>
