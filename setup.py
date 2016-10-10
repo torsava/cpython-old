@@ -294,6 +294,18 @@ class PyBuildExt(build_ext):
                                               longest, g))
 
         if missing:
+            # PEP XXXX: Create .missing.py files
+            for ext in missing:
+                # If the extension wasn't already built in a previous build
+                if not os.path.exists(self.get_ext_fullpath(ext)):
+                    path = self.get_ext_fullpath(ext, ext_suffix=".missing.py")
+                    if not os.path.exists(path):
+                        with open(path, 'w') as f:
+                            f.write("raise ModuleNotFoundError(\"This build of "
+                                    "Python is missing the optional module "
+                                    "'%s' as the necessary bits to build it "
+                                    "were not found.\")" % ext)
+
             print()
             print("Python build finished successfully!")
             print("The necessary bits to build these optional modules were not "

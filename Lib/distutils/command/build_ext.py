@@ -635,7 +635,7 @@ class build_ext(Command):
 
     # -- Name generators -----------------------------------------------
     # (extension names, filenames, whatever)
-    def get_ext_fullpath(self, ext_name):
+    def get_ext_fullpath(self, ext_name, ext_suffix=None):
         """Returns the path of the filename for a given extension.
 
         The file is located in `build_lib` or directly in the package
@@ -643,7 +643,7 @@ class build_ext(Command):
         """
         fullname = self.get_ext_fullname(ext_name)
         modpath = fullname.split('.')
-        filename = self.get_ext_filename(modpath[-1])
+        filename = self.get_ext_filename(modpath[-1], ext_suffix)
 
         if not self.inplace:
             # no further work needed
@@ -671,14 +671,15 @@ class build_ext(Command):
         else:
             return self.package + '.' + ext_name
 
-    def get_ext_filename(self, ext_name):
+    def get_ext_filename(self, ext_name, ext_suffix=None):
         r"""Convert the name of an extension (eg. "foo.bar") into the name
         of the file from which it will be loaded (eg. "foo/bar.so", or
         "foo\bar.pyd").
         """
-        from distutils.sysconfig import get_config_var
         ext_path = ext_name.split('.')
-        ext_suffix = get_config_var('EXT_SUFFIX')
+        if ext_suffix is None:
+            from distutils.sysconfig import get_config_var
+            ext_suffix = get_config_var('EXT_SUFFIX')
         return os.path.join(*ext_path) + ext_suffix
 
     def get_export_symbols(self, ext):
